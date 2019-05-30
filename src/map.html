@@ -1,0 +1,240 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="application-name" content="cmv" />
+    <meta name="description" content="CMV - The Configurable Map Viewer. Community supported open source mapping framework. Works with the Esri JavaScript API, ArcGIS Server, ArcGIS Online and more. Make it your own!" />
+    <meta name="author" content="cmv.io" />
+    <title>UAIMS - Map Viewer</title>
+   
+    <link rel="stylesheet" type="text/css" href="/UAIMSMap/3.21compact/esri/css/esri.css" />
+
+
+    <link rel="stylesheet" type="text/css" href="/UAIMSMap/css/theme/flat/flat.css" />
+    <link rel="stylesheet" type="text/css" href="/UAIMSMap/css/cmv-theme-overrides.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="/UAIMSMap/css/main.css" />
+
+    <script src="../assets/global/plugins/bootstrap-sweetalert/sweetalert.min.js" />
+    <link href="../assets/global/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
+</head>
+<body className="cmv flat">
+    <div className="appHeader">
+        <div className="headerLogo">
+            <img alt="logo" src="../Content/CustImages/HeaderLogo.png" height="54" />
+        </div>
+        <div className="headerTitle">
+            <span id="headerTitleSpan">
+                UAIMS - Map Viewer
+            </span>
+            <div id="subHeaderTitleSpan" className="subHeaderTitle">
+                Land Management System
+            </div>
+        </div>
+        <div className="search" style="display:none;">
+            <!--To hide dropdownlist-->
+            <div id='geocodeDijit' />
+          
+        </div>
+        <div className="headerLinks">
+            <div id="helpDijit" />
+           
+        </div>
+    </div>
+    <script type="text/javascript">
+        var s = window.location.search, q = s.match(/locale=([^&]*)/i);
+        var locale = (q && q.length > 0) ? q[1] : null;
+        window.dojoConfig = {
+            locale: locale,
+            async: true
+        };
+    </script>
+    <!--[if lt IE 9]>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js" />
+    <![endif]-->
+    <!--<script src="https://js.arcgis.com/3.21compact/" />-->
+
+
+
+    <script src="/UAIMSMap/3.21compact/init.js" />
+    <script src="/UAIMSMap/js/config/app.js" />
+    <!--Sweet Alert code-->
+    <div className="sweet-overlay" tabindex="-1" style="opacity: 1.04; display: none;" id="sweet-overlay" />
+    <div className="sweet-alert  showSweetAlert" tabindex="-1" id="sweet-alert" data-custom-className="" data-has-cancel-button="false" data-has-confirm-button="true" data-allow-outside-click="true" data-has-done-function="true" data-animation="pop" data-timer="null" style="margin-top: -150px;">
+        <div className="sa-icon sa-error" style="display: none;">
+            <span className="sa-x-mark">
+                <span className="sa-line sa-left" />
+                <span className="sa-line sa-right" />
+            </span>
+        </div>
+        <div className="sa-icon sa-warning" style="display: none;">
+            <span className="sa-body" />
+            <span className="sa-dot" />
+        </div>
+        <div className="sa-icon sa-info" style="display: none;"></div><div className="sa-icon sa-success animate" style="display: block;">
+            <span className="sa-line sa-tip animateSuccessTip"></span>
+            <span className="sa-line sa-long animateSuccessLong"></span>
+
+            <div className="sa-placeholder"></div>
+            <div className="sa-fix"></div>
+        </div>
+        <div className="sa-icon sa-custom" style="display: none;"></div>
+        <p id="SuccessContent" style="padding-top:10px;"></p>
+
+        <div className="form-group">
+            <input type="text" className="form-control" tabindex="3" placeholder="">
+            <span className="sa-input-error help-block">
+                <span className="glyphicon glyphicon-exclamation-sign"></span> <span className="sa-help-text">Not valid</span>
+            </span>
+        </div><div className="sa-button-container">
+            <button className="cancel btn btn-lg btn-default" tabindex="2" style="display: none;">Cancel</button>
+            <div className="sa-confirm-button-container">
+                <button className="confirm btn btn-lg btn-success" id="confirm" tabindex="1" onclick="confirmClick();" style="display: inline-block;">OK</button>
+                <div className="la-ball-fall">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div className="sweet-overlay" tabindex="-1" style="opacity: 1.02; display: none;" id="sweet-overlayError"></div>
+    <div className="sweet-alert  showSweetAlert visible" id="sweet-alertError" tabindex="-1" data-custom-className="" data-has-cancel-button="false" data-has-confirm-button="true" data-allow-outside-click="true" data-has-done-function="true" data-animation="pop" data-timer="null" style="display: none;">
+        <div className="sa-icon sa-error animateErrorIcon" style="display: block;">
+            <span className="sa-x-mark animateXMark">
+                <span className="sa-line sa-left"></span>
+                <span className="sa-line sa-right"></span>
+            </span>
+        </div><div className="sa-icon sa-warning" style="display: none;">
+            <span className="sa-body"></span>
+            <span className="sa-dot"></span>
+        </div><div className="sa-icon sa-info" style="display: none;"></div><div className="sa-icon sa-success" style="display: none;">
+            <span className="sa-line sa-tip"></span>
+            <span className="sa-line sa-long"></span>
+
+            <div className="sa-placeholder"></div>
+            <div className="sa-fix"></div>
+        </div><div className="sa-icon sa-custom" style="display: none;"></div>
+        <p id="content" style="padding-top:10px;"></p>
+        <div className="form-group">
+            <input type="text" className="form-control" tabindex="3" placeholder="">
+            <span className="sa-input-error help-block">
+                <span className="glyphicon glyphicon-exclamation-sign"></span> <span className="sa-help-text">Not valid</span>
+            </span>
+        </div><div className="sa-button-container">
+            <button className="cancel btn btn-lg btn-default btn-danger" tabindex="2" style="display: none;">Cancel</button>
+            <div className="sa-confirm-button-container">
+                <button className="confirm btn btn-lg btn-danger" id="btnconfirmError" onclick="confirmError()" tabindex="1" style="display: inline-block;">OK</button><div className="la-ball-fall">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div className="sweet-overlay" tabindex="-1" style="opacity: 1.04; display: none;" id="confirm1"></div>
+    <div id="confirm2" className="sweet-alert  showSweetAlert" tabindex="-1" data-custom-className="" data-has-cancel-button="true" data-has-confirm-button="true" data-allow-outside-click="true" data-has-done-function="true" data-animation="pop" data-timer="null" style="display:none; margin-top: -169px;">
+        <div className="sa-icon sa-error" style="display: none;">
+            <span className="sa-x-mark">
+                <span className="sa-line sa-left"></span>
+                <span className="sa-line sa-right"></span>
+            </span>
+        </div>
+        <div className="sa-icon sa-warning pulseWarning" style="display: none;">
+            <span className="sa-body"></span>
+            <span className="sa-dot"></span>
+        </div>
+        <div className="sa-icon sa-info" style="display: block;"></div><div className="sa-icon sa-success" style="display: none;">
+            <span className="sa-line sa-tip"></span>
+            <span className="sa-line sa-long"></span>
+
+            <div className="sa-placeholder"></div>
+            <div className="sa-fix"></div>
+        </div>
+        <div className="sa-icon sa-custom" style="display: none;"></div>
+        <h2><p id="deletecontent"></p></h2>
+        <p className="lead text-muted " style="display: block;" id="deletecontentdesc"></p>
+        <div className="form-group">
+            <input type="text" className="form-control" tabindex="3" placeholder="">
+            <span className="sa-input-error help-block">
+                <span className="glyphicon glyphicon-exclamation-sign"></span><span className="sa-help-text">Not valid</span>
+            </span>
+        </div>
+        <div className="sa-button-container" id="mybutton">
+            <button className="cancel btn btn-lg btn-default btn-danger" tabindex="2" style="display: inline-block;" id="disagree">Cancel</button>
+            <div className="sa-confirm-button-container">
+                <button className="confirm btn btn-lg btn-success" tabindex="1" style="display: inline-block;" id="agree"                        
+                        >OK</button><div className="la-ball-fall">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="responsive" className="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div className="modal-dialog">
+            <div className="modal-content">
+                <div className="modal-header">
+                    <button type="button" className="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 className="modal-title">Responsive &amp; Scrollable</h4>
+                </div>
+                <div className="modal-body">
+                    <div className="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 300px;">
+                        <div className="scroller" style="height: 300px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="1" data-initialized="1">
+                            <div className="row">
+                                <div className="text-left col-sm-12" id="divPDF">
+
+                                </div>
+                            </div>
+                        </div><div className="slimScrollBar" style="background: rgb(187, 187, 187); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 300px;"></div><div className="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                    </div>
+                </div>
+                <div className="modal-footer">
+                    <button type="button" data-dismiss="modal" className="btn dark btn-outline">Close</button>
+                    <button type="button" className="btn green">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //document.getElementById('confirm').onclick = function () {
+        function confirmClick() {
+            document.getElementById('sweet-overlay').style.display = 'none';//.css("display", "block");
+            document.getElementById('sweet-alert').style.display = 'none';//.css("display", "block");
+            //$('.demo').fSelect();
+        }
+
+        function confirmError() {
+            document.getElementById('sweet-overlayError').style.display = 'none';
+            document.getElementById('sweet-alertError').style.display = 'none';
+        }
+
+        document.getElementsByclassName=('.cancel').onclick = function () {
+            alert('test');
+            document.getElementById('.sweet-overlay').style.display = 'none';
+            document.getElementById('.sweet-alert').style.display = 'none';
+        };
+
+        document.getElementById('disagree').onclick = function () {
+            //alert('test');
+            document.getElementById('confirm2').style.display = 'none';
+        };
+        //TestFunction
+
+        document.getElementById('agree').onclick = function () {
+            //alert('test');
+            //TestFunction();
+
+            
+        };
+        
+    </script>
+  
+</body>
+</html>
