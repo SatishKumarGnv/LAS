@@ -771,7 +771,7 @@ import NewPropertyUploadDocumentForm from "src/PTMSMASTERS/NewPropertyAssesment/
 import AddPropertyMasterForm from "src/PTMSMASTERS/Property/AddProperty";
 import PropertiesTypeMasterForm, { IEditProProps } from "src/PTMSMASTERS/Property/PropertyType";
 import PropertyChangeForm from "src/PTMSMASTERS/PropertyChange/PropertyChange";
-import PropertyDepartmentMasterForm from "src/PTMSMASTERS/PropertyDepartmentMaster/ PropertyDepartmentMasterTable";
+import PropertyDepartmentMasterForm from "src/PTMSMASTERS/PropertyDepartmentMaster/PropertyDepartmentMasterTable";
 import AddPropertyDepartmentForm from "src/PTMSMASTERS/PropertyDepartmentMaster/AddPropertyDepartmentMaster";
 import { IConfirmationProps } from "src/PTMSMASTERS/PropertySearchAndTaxPay/ComfirmationForm";
 import { IPaymentInfoProps } from "src/PTMSMASTERS/PropertySearchAndTaxPay/PaymentInfoForm";
